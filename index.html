@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vespa</title>
   <link rel="stylesheet" href="/src/styles.css" />
+  <link rel="icon" href="/favicon.ico" />
 </head>
 <body>
 
@@ -34,7 +35,7 @@
 
   <!-- Left rail -->
   <nav class="rail">
-    <div class="logo">V</div>
+    <div class="logo" data-tauri-drag-region>V</div>
     <button class="rail-btn active" title="Playlist">
       <svg class="icon"><use href="#i-list"/></svg>
     </button>
@@ -61,30 +62,27 @@
 
     <!-- Playlist + side panel -->
     <section class="body">
-      <ol class="list" id="list">
-        <li class="track">
-          <div class="track-name">Artist - Title</div>
-          <div class="track-time">3:41</div>
-          <div class="track-meta">MP3 :: 44 kHz, 320 kbps</div>
-        </li>
-      </ol>
+      <ol class="list" id="list"></ol>
 
       <aside class="side">
-        <input class="search" placeholder="Quick search" />
-        <div class="tab active">Default</div>
-        <div class="spacer"></div>
-        <div class="tools">
-          <button class="tool-btn" id="add" title="Open files">
-            <svg class="icon stroke"><use href="#i-folder"/></svg>
-          </button>
-          <button class="tool-btn" id="del" title="Remove selected">
-            <svg class="icon"><use href="#i-minus"/></svg>
-          </button>
-          <button class="tool-btn" id="sort" title="Sort by title">
-            <svg class="icon"><use href="#i-sort"/></svg>
-          </button>
-        </div>
-      </aside>
+  <input class="search" id="search" placeholder="Quick search" />
+  <div class="tabs" id="tabs"></div>
+  <button class="tab-add" id="tab-add" title="New playlist">
+    <svg class="icon"><use href="#i-plus"/></svg>
+  </button>
+  <div class="spacer"></div>
+  <div class="tools">
+    <button class="tool-btn" id="add" title="Add folder">
+      <svg class="icon stroke"><use href="#i-folder"/></svg>
+    </button>
+    <button class="tool-btn" id="del" title="Delete playlist">
+      <svg class="icon"><use href="#i-minus"/></svg>
+    </button>
+    <button class="tool-btn" id="sort" title="Sort">
+      <svg class="icon"><use href="#i-sort"/></svg>
+    </button>
+  </div>
+</aside>
     </section>
 
     <!-- Player bar -->
@@ -122,6 +120,29 @@
     </footer>
 
   </main>
+</div>
+
+<!-- Mini player -->
+<div class="mini" id="mini" data-tauri-drag-region hidden>
+  <img class="mini-cover" id="mini-cover" alt="" />
+  <div class="mini-info">
+    <div class="mini-title" id="mini-title">—</div>
+    <div class="mini-artist" id="mini-artist">—</div>
+  </div>
+  <div class="mini-controls">
+    <button id="mini-prev" title="Previous">
+      <svg class="icon"><use href="#i-prev"/></svg>
+    </button>
+    <button id="mini-play" title="Play / Pause">
+      <svg class="icon"><use href="#i-play"/></svg>
+    </button>
+    <button id="mini-next" title="Next">
+      <svg class="icon"><use href="#i-next"/></svg>
+    </button>
+    <button id="mini-restore" title="Restore">
+      <svg class="icon"><use href="#i-sort"/></svg>
+    </button>
+  </div>
 </div>
 
 <script type="module" src="/src/main.ts"></script>

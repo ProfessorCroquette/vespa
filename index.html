@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vespa</title>
+  <link rel="stylesheet" href="/src/styles.css" />
+</head>
+<body>
+
+<!-- SVG sprite: define once, reuse with <use href="#id"> -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <!-- filled icons -->
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></symbol>
+  <symbol id="i-prev" viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6z"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 11h14v2H5z"/></symbol>
+  <symbol id="i-sort" viewBox="0 0 24 24"><path d="M4 6h16v2H4zM4 11h11v2H4zM4 16h6v2H4z"/></symbol>
+  <symbol id="i-min" viewBox="0 0 24 24"><path d="M5 18h14v2H5z"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6.4 5 12 10.6 17.6 5 19 6.4 13.4 12 19 17.6 17.6 19 12 13.4 6.4 19 5 17.6 10.6 12 5 6.4z"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M4 6h2v2H4zM8 6h12v2H8zM4 11h2v2H4zM8 11h12v2H8zM4 16h2v2H4zM8 16h12v2H8z"/></symbol>
+  <symbol id="i-eq" viewBox="0 0 24 24"><path d="M5 12h2v8H5zM11 6h2v14h-2zM17 9h2v11h-2z"/></symbol>
+  <symbol id="i-repeat-one" viewBox="0 0 24 24"><path d="m17 2 4 4-4 4M3 11v-1a4 4 0 0 1 4-4h14M7 22l-4-4 4-4M21 13v1a4 4 0 0 1-4 4H3M11 10h1v4"/></symbol>
+
+  <!-- outline icons (use with class="icon stroke") -->
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+  <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></symbol>
+  <symbol id="i-repeat" viewBox="0 0 24 24"><path d="m17 1 4 4-4 4M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 0 1-4 4H3"/></symbol>
+</svg>
+
+<div class="app">
+
+  <!-- Left rail -->
+  <nav class="rail">
+    <div class="logo">V</div>
+    <button class="rail-btn active" title="Playlist">
+      <svg class="icon"><use href="#i-list"/></svg>
+    </button>
+    <button class="rail-btn" title="Equalizer">
+      <svg class="icon"><use href="#i-eq"/></svg>
+    </button>
+    <div class="spacer"></div>
+    <button class="rail-btn" id="min" title="Minimize">
+      <svg class="icon"><use href="#i-min"/></svg>
+    </button>
+    <button class="rail-btn" id="close" title="Close">
+      <svg class="icon"><use href="#i-close"/></svg>
+    </button>
+  </nav>
+
+  <main>
+
+    <!-- Header -->
+    <header class="header">
+      <h1 class="title">Vespa</h1>
+      <span class="stats" id="stats">0 / 0:00</span>
+      <div class="stripe"></div>
+    </header>
+
+    <!-- Playlist + side panel -->
+    <section class="body">
+      <ol class="list" id="list">
+        <li class="track">
+          <div class="track-name">Artist - Title</div>
+          <div class="track-time">3:41</div>
+          <div class="track-meta">MP3 :: 44 kHz, 320 kbps</div>
+        </li>
+      </ol>
+
+      <aside class="side">
+        <input class="search" placeholder="Quick search" />
+        <div class="tab active">Default</div>
+        <div class="spacer"></div>
+        <div class="tools">
+          <button class="tool-btn" id="add" title="Open files">
+            <svg class="icon stroke"><use href="#i-folder"/></svg>
+          </button>
+          <button class="tool-btn" id="del" title="Remove selected">
+            <svg class="icon"><use href="#i-minus"/></svg>
+          </button>
+          <button class="tool-btn" id="sort" title="Sort by title">
+            <svg class="icon"><use href="#i-sort"/></svg>
+          </button>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Player bar -->
+    <footer class="player">
+      <img class="cover" id="cover" alt="Album cover" />
+
+      <div class="now">
+        <div class="now-title" id="now-title">Nothing playing</div>
+        <div class="now-artist" id="now-artist">Add files to begin</div>
+        <div class="now-meta" id="now-meta"></div>
+      </div>
+
+      <div class="controls">
+        <div class="time"><span id="cur">0:00</span> <small id="dur">0:00</small></div>
+        <input class="seek" id="seek" type="range" min="0" max="1000" value="0" />
+        <div class="buttons">
+          <button id="prev" title="Previous">
+            <svg class="icon"><use href="#i-prev"/></svg>
+          </button>
+          <button id="play" class="big" title="Play / Pause">
+            <svg class="icon"><use href="#i-play"/></svg>
+          </button>
+          <button id="next" title="Next">
+            <svg class="icon"><use href="#i-next"/></svg>
+          </button>
+          <button id="shuffle" title="Shuffle">
+            <svg class="icon stroke"><use href="#i-shuffle"/></svg>
+          </button>
+          <button id="repeat" title="Repeat">
+            <svg class="icon stroke"><use href="#i-repeat"/></svg>
+          </button>
+          <input class="volume" id="vol" type="range" min="0" max="100" value="80" />
+        </div>
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>
